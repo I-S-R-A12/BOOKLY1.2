@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+
 class LoginWithGoogle extends StatefulWidget {
   const LoginWithGoogle({super.key});
 
@@ -55,7 +56,11 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Iniciar sesión con Google")),
+      
+      appBar: AppBar(title: const Text("Iniciar sesión con Google"),
+      automaticallyImplyLeading: false,
+      ),
+      
       body: Center(
         child: ElevatedButton.icon(
           icon: const Icon(Icons.login),

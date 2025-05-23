@@ -1,2 +1,0 @@
-//En esta parte puedes empezar ha realizar la ventana de inicio
-// Otro comentari

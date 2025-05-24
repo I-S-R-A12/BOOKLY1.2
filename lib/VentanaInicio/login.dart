@@ -1,5 +1,6 @@
 //En esta parte puedes empezar ha realizar la ventana de inicio
 // Otro comentari
+import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:bookly12/VentanaInicio/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
       // Navega a la vista principal después de iniciar sesión
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => LibrosForm()),
       );
     } catch (e) {
       showDialog(

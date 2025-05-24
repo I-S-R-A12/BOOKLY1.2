@@ -20,14 +20,16 @@ class _LibrosFormState extends State<LibrosForm> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final user = FirebaseAuth.instance.currentUser;
-      final uid = user?.uid;
 
-      if (uid == null) {
+      if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuario no autenticado')),
+          const SnackBar(content: Text('Usuario no autenticado')),
         );
         return;
       }
+
+      final uid = user.uid;
+      final idToken = await user.getIdToken();
 
       final data = {
         'Título': _titulo.text,
@@ -37,18 +39,24 @@ class _LibrosFormState extends State<LibrosForm> {
       };
 
       final response = await http.post(
-        Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/Libros.json'),
+        Uri.parse(
+          'https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/libros.json?auth=$idToken',
+        ),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(data),
       );
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Libro Publicado Correctamente')),
+          const SnackBar(content: Text('Libro Publicado Correctamente')),
         );
+        _titulo.clear();
+        _autor.clear();
+        _anio.clear();
+        _imagenUrl.clear();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al Publicar el Libro')),
+          SnackBar(content: Text('Error al publicar libro: ${response.statusCode}, ${response.body}')),
         );
       }
     }
@@ -58,7 +66,7 @@ class _LibrosFormState extends State<LibrosForm> {
     return InputDecoration(
       labelText: label,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       filled: true,
       fillColor: Colors.white,
     );
@@ -124,7 +132,7 @@ class _LibrosFormState extends State<LibrosForm> {
                 decoration: _inputDecoration('Título del libro'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese el titulo';
+                    return 'Por favor ingrese el título';
                   }
                   return null;
                 },
@@ -132,7 +140,7 @@ class _LibrosFormState extends State<LibrosForm> {
               const SizedBox(height: 15),
               TextFormField(
                 controller: _autor,
-                keyboardType: TextInputType.text, // Corregido
+                keyboardType: TextInputType.text,
                 decoration: _inputDecoration('Nombre del Autor'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -169,7 +177,7 @@ class _LibrosFormState extends State<LibrosForm> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _submitForm,
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 14),
                     child: Text('Publicar Libro', style: TextStyle(fontSize: 16)),
                   ),

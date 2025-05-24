@@ -122,7 +122,7 @@ Widget build(BuildContext context) {
               const SizedBox(height: 15),
               TextFormField(
                 controller: _autor,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 decoration: _inputDecoration('Nombre del Autor'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LibrosForm extends StatefulWidget {
   const LibrosForm({super.key});
@@ -18,6 +19,16 @@ class _LibrosFormState extends State<LibrosForm> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      final user = FirebaseAuth.instance.currentUser;
+      final uid = user?.uid;
+
+      if (uid == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Usuario no autenticado')),
+        );
+        return;
+      }
+
       final data = {
         'Título': _titulo.text,
         'Autor': _autor.text,
@@ -26,7 +37,7 @@ class _LibrosFormState extends State<LibrosForm> {
       };
 
       final response = await http.post(
-        Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/Libros.json'),
+        Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/Libros.json'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(data),
       );
@@ -52,31 +63,32 @@ class _LibrosFormState extends State<LibrosForm> {
       fillColor: Colors.white,
     );
   }
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: const Color.fromARGB(255, 101, 158, 102), // Fondo verde
-    appBar: AppBar(
-  backgroundColor: const Color.fromARGB(255, 101, 158, 102),
-  title: Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 101, 158, 102),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Text(
-      'BOOKLY',
-      style: GoogleFonts.roboto(
-        fontWeight: FontWeight.w900,
-        fontSize: 28,
-        letterSpacing: 2,
-        fontStyle: FontStyle.italic,
-        color: const Color.fromARGB(255, 6, 1, 1),
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 101, 158, 102),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 101, 158, 102),
+        title: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 101, 158, 102),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            'BOOKLY',
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w900,
+              fontSize: 28,
+              letterSpacing: 2,
+              fontStyle: FontStyle.italic,
+              color: const Color.fromARGB(255, 6, 1, 1),
+            ),
+          ),
+        ),
+        centerTitle: true,
       ),
-    ),
-  ),
-  centerTitle: true,
-),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -84,30 +96,29 @@ Widget build(BuildContext context) {
           child: Column(
             children: [
               Container(
-  width: double.infinity,
-  padding: const EdgeInsets.symmetric(vertical: 16),
-  margin: const EdgeInsets.only(bottom: 25),
-  decoration: BoxDecoration(
-    color: const Color.fromARGB(255, 101, 158, 102), // Mismo verde que el fondo
-    borderRadius: BorderRadius.circular(10),
-    border: Border.all(
-      color: const Color.fromARGB(255, 38, 48, 38), // Borde igual al fondo
-      width: 1,
-    ),
-  ),
-  child: const Center(
-    child: Text(
-      'Nuevo libro',
-      style: TextStyle(
-        color: Color.fromARGB(255, 24, 18, 18),
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        letterSpacing: 1,
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                margin: const EdgeInsets.only(bottom: 25),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 101, 158, 102),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 38, 48, 38),
+                    width: 1,
+                  ),
+                ),
+                child: const Center(
+                  child: Text(
+                    'Nuevo libro',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 24, 18, 18),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      letterSpacing: 1,
+                    ),
+                  ),
                 ),
               ),
-               ),
-            ),
-
               TextFormField(
                 controller: _titulo,
                 decoration: _inputDecoration('Título del libro'),
@@ -119,10 +130,9 @@ Widget build(BuildContext context) {
                 },
               ),
               const SizedBox(height: 15),
-              const SizedBox(height: 15),
               TextFormField(
                 controller: _autor,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.text, // Corregido
                 decoration: _inputDecoration('Nombre del Autor'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

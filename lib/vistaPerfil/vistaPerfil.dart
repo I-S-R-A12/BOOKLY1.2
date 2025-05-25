@@ -22,8 +22,11 @@ class _VistaPerfilState extends State<VistaPerfil> {
     cargarDatosDesdeRealtimeDatabase();
   }
 
-  //funcion para cargar los datos de perfil de RealtimeDatabase
+  //Funcion para cargar los datos de perfil de usuario en de la BD
   Future<void> cargarDatosDesdeRealtimeDatabase() async {
+
+
+
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -108,7 +111,7 @@ class _VistaPerfilState extends State<VistaPerfil> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    
+
                     //me muestra los datos del perfil del  del usario logueado
                     Text(
                       'Bienvenid@ ${nombre ?? 'Nombre no disponible'}',

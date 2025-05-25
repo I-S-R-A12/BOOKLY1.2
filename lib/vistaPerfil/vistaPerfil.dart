@@ -54,7 +54,7 @@ class _VistaPerfilState extends State<VistaPerfil> {
     }
   }
 
-    //Funcion para cerrar sesion con google y firebase
+    //Funcion para cerrar sesion con google y firebaseeeeeeee
   void cerrarSesion() async {
     try {
       final googleSignIn = GoogleSignIn();

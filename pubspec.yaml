@@ -16,7 +16,7 @@ dependencies:
   firebase_auth: ^5.5.4
   google_sign_in: ^6.3.0
   cached_network_image: ^3.4.1
-  http: ^1.4.0
+  fluttertoast: ^8.2.2
   image_picker: ^1.1.2
 
 

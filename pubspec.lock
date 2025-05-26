@@ -559,6 +559,4 @@ packages:
     version: "1.1.0"
 sdks:
   dart: ">=3.7.0 <4.0.0"
-
   flutter: ">=3.27.0"
- main

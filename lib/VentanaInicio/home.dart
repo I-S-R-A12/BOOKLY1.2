@@ -1,4 +1,6 @@
+import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
 import 'package:flutter/material.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +12,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Bienvenido")));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Bienvenido"),
+      ),
+      body: const Center(
+        child: Text("Bienvenido"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  vistaPerfil()),
+          );
+        },
+        child: Icon(Icons.person), 
+      )
+    );
+    
   }
 }

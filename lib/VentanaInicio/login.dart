@@ -1,11 +1,12 @@
-//En esta parte puedes empezar ha realizar la ventana de inicio
-// Otro comentari
+
 import 'package:bookly12/VentanaInicio/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginWithGoogle extends StatefulWidget {
   const LoginWithGoogle({super.key});
@@ -15,6 +16,46 @@ class LoginWithGoogle extends StatefulWidget {
 }
 
 class _LoginWithGoogleState extends State<LoginWithGoogle> {
+  
+  // Función para guardar nombre, correo  y url de Fperfil en Realtime Database
+ 
+    Future<void> guardarPerfilEnRealtimeDatabase(User usuario) async {
+  final uid = usuario.uid;
+  final idToken = await usuario.getIdToken();
+
+  final url = Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+
+    if (data == null) {
+      
+      final perfilData = {
+        'nombre': usuario.displayName ?? '',
+        'correo': usuario.email ?? '',
+        'fotoURL': '', 
+      };
+
+      final putResponse = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(perfilData),
+      );
+
+      if (putResponse.statusCode != 200) {
+        throw Exception('Error al crear el perfil en Realtime Database');
+      }
+    } else {
+    
+      print('Perfil ya existe, se conserva la foto.');
+    }
+  } else {
+    throw Exception('Error al verificar el perfil en Realtime Database');
+  }
+}
+
   Future<void> iniciarSesionGoogle() async {
     try {
       if (kIsWeb) {
@@ -22,7 +63,6 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
         GoogleAuthProvider authProvider = GoogleAuthProvider();
         await FirebaseAuth.instance.signInWithPopup(authProvider);
       } else {
-        
         // Para móvil: usa google_sign_in package
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) return;
@@ -35,6 +75,14 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
+      }
+
+      await FirebaseAuth.instance.currentUser?.reload();
+
+      // Guardar nombre y correo y url de Fperfil en base de datos personalizada
+      User? usuario = FirebaseAuth.instance.currentUser;
+      if (usuario != null) {
+        await guardarPerfilEnRealtimeDatabase(usuario);
       }
 
       // Navega a la vista principal después de iniciar sesión
@@ -56,11 +104,10 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(title: const Text("Iniciar sesión con Google"),
-      automaticallyImplyLeading: false,
+      appBar: AppBar(
+        title: const Text("Iniciar sesión con Google"),
+        automaticallyImplyLeading: false,
       ),
-      
       body: Center(
         child: ElevatedButton.icon(
           icon: const Icon(Icons.login),

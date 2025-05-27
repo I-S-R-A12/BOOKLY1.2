@@ -18,28 +18,43 @@ class LoginWithGoogle extends StatefulWidget {
 class _LoginWithGoogleState extends State<LoginWithGoogle> {
   
   // Función para guardar nombre, correo  y url de Fperfil en Realtime Database
-  Future<void> guardarPerfilEnRealtimeDatabase(User usuario) async {
-    final uid = usuario.uid;
-    final idToken = await usuario.getIdToken();
+ 
+    Future<void> guardarPerfilEnRealtimeDatabase(User usuario) async {
+  final uid = usuario.uid;
+  final idToken = await usuario.getIdToken();
 
-    final url = Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken');
+  final url = Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken');
 
-    final perfilData = {
-      'nombre': usuario.displayName ?? '',
-      'correo': usuario.email ?? '',
-     'fotoURL': usuario.photoURL ?? '',
-    };
+  final response = await http.get(url);
 
-    final response = await http.put(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(perfilData),
-    );
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
 
-    if (response.statusCode != 200) {
-      throw Exception('Error al guardar perfil en Realtime Database');
+    if (data == null) {
+      
+      final perfilData = {
+        'nombre': usuario.displayName ?? '',
+        'correo': usuario.email ?? '',
+        'fotoURL': '', 
+      };
+
+      final putResponse = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(perfilData),
+      );
+
+      if (putResponse.statusCode != 200) {
+        throw Exception('Error al crear el perfil en Realtime Database');
+      }
+    } else {
+    
+      print('Perfil ya existe, se conserva la foto.');
     }
+  } else {
+    throw Exception('Error al verificar el perfil en Realtime Database');
   }
+}
 
   Future<void> iniciarSesionGoogle() async {
     try {

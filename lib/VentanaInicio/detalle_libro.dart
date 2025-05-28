@@ -30,9 +30,9 @@ class DetalleLibro extends StatelessWidget {
           children: [
             Center(child: Image.network(imagen, height: 200)),
             const SizedBox(height: 20),
-            Text('📖 Título: $titulo', style: const TextStyle(fontSize: 18)),
+            Text('📖 Nombre del libro: $titulo', style: const TextStyle(fontSize: 18)),
             Text('✍️ Autor: $autor', style: const TextStyle(fontSize: 16)),
-            Text('📅 Año: $anio', style: const TextStyle(fontSize: 16)),
+            Text('📅 Año de publicacion: $anio', style: const TextStyle(fontSize: 16)),
             Text('👤 Publicado por: $usuario', style: const TextStyle(fontSize: 16)),
           ],
         ),

@@ -145,6 +145,7 @@ class _vistaPerfilState extends State<vistaPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: const Color(0xFFE1E3DD),
       appBar: AppBar(
         backgroundColor: Color(0xFF9DBE9F),
         title: Text(

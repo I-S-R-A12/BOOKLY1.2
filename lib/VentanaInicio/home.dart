@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
+import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'detalle_libro.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -127,7 +131,7 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             // Aquí puedes activar los botones cuando estén listos
-            /*
+            
             IconButton(
               icon: const Icon(Icons.add_circle_outline, size: 32),
               onPressed: () {},
@@ -135,10 +139,15 @@ class _HomeState extends State<Home> {
             ),
             IconButton(
               icon: const Icon(Icons.person_outline, size: 32),
-              onPressed: () {},
               tooltip: 'Perfil',
+              onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => vistaPerfil())
+              );
+            },
             ),
-            */
+            
           ],
         ),
       ),
@@ -149,11 +158,8 @@ class _HomeState extends State<Home> {
 
 
 
-/*import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'detalle_libro.dart';
-//import 'agregar_libro.dart'; // pantalla agregar libro
+/*
+
 
 class Home extends StatefulWidget {
   const Home({super.key});

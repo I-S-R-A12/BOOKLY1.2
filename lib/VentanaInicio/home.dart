@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
             IconButton(
               icon: const Icon(Icons.add_circle_outline, size: 32),
               onPressed: () {
-                   Navigator.push(
+                  Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LibrosForm())
               );

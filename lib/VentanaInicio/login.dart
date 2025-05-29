@@ -1,4 +1,3 @@
-
 import 'package:bookly12/VentanaInicio/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -16,45 +15,44 @@ class LoginWithGoogle extends StatefulWidget {
 }
 
 class _LoginWithGoogleState extends State<LoginWithGoogle> {
-  
   // Función para guardar nombre, correo  y url de Fperfil en Realtime Database
- 
-    Future<void> guardarPerfilEnRealtimeDatabase(User usuario) async {
-  final uid = usuario.uid;
-  final idToken = await usuario.getIdToken();
 
-  final url = Uri.parse('https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken');
+  Future<void> guardarPerfilEnRealtimeDatabase(User usuario) async {
+    final uid = usuario.uid;
+    final idToken = await usuario.getIdToken();
 
-  final response = await http.get(url);
+    final url = Uri.parse(
+      'https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken',
+    );
 
-  if (response.statusCode == 200) {
-    final data = json.decode(response.body);
+    final response = await http.get(url);
 
-    if (data == null) {
-      
-      final perfilData = {
-        'nombre': usuario.displayName ?? '',
-        'correo': usuario.email ?? '',
-        'fotoURL': '', 
-      };
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
 
-      final putResponse = await http.put(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(perfilData),
-      );
+      if (data == null) {
+        final perfilData = {
+          'nombre': usuario.displayName ?? '',
+          'correo': usuario.email ?? '',
+          'fotoURL': '',
+        };
 
-      if (putResponse.statusCode != 200) {
-        throw Exception('Error al crear el perfil en Realtime Database');
+        final putResponse = await http.put(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(perfilData),
+        );
+
+        if (putResponse.statusCode != 200) {
+          throw Exception('Error al crear el perfil en Realtime Database');
+        }
+      } else {
+        print('Perfil ya existe, se conserva la foto.');
       }
     } else {
-    
-      print('Perfil ya existe, se conserva la foto.');
+      throw Exception('Error al verificar el perfil en Realtime Database');
     }
-  } else {
-    throw Exception('Error al verificar el perfil en Realtime Database');
   }
-}
 
   Future<void> iniciarSesionGoogle() async {
     try {
@@ -67,7 +65,8 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) return;
 
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
@@ -93,30 +92,73 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
     } catch (e) {
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          title: const Text("Error"),
-          content: Text("Error al iniciar sesión con Google: $e"),
-        ),
+        builder:
+            (_) => AlertDialog(
+              title: const Text("Error"),
+              content: Text("Error al iniciar sesión con Google: $e"),
+            ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Iniciar sesión con Google"),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.login),
-          label: const Text("Iniciar sesión con Google"),
-          onPressed: iniciarSesionGoogle,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.redAccent,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Colors.green[100], // Fondo verde claro
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Texto "BOOKLY"
+              Text(
+                "BOOKLY",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 40), // Espacio entre el texto y el botón
+              // Botón "Iniciar con Google"
+              ElevatedButton(
+                onPressed: iniciarSesionGoogle,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // Fondo blanco
+                  foregroundColor: Colors.black, // Texto negro
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Logotipo de Google
+                    Image.asset(
+                      'assets/google_logo.png', // Reemplaza con la ruta correcta del archivo
+                      width: 24,
+                      height: 24,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ), // Espacio entre el logotipo y el texto
+                    // Texto "Iniciar con Google"
+                    Text(
+                      "Iniciar con Google",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

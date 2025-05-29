@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
+
+import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'detalle_libro.dart';
@@ -134,7 +136,12 @@ class _HomeState extends State<Home> {
             
             IconButton(
               icon: const Icon(Icons.add_circle_outline, size: 32),
-              onPressed: () {},
+              onPressed: () {
+                   Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LibrosForm())
+              );
+                },
               tooltip: 'Agregar libro',
             ),
             IconButton(
@@ -247,5 +254,4 @@ class _HomeState extends State<Home> {
   }
 }
 */
-
 

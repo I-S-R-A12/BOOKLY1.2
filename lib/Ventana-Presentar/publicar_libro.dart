@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+
 
 class LibrosForm extends StatefulWidget {
   const LibrosForm({super.key});
@@ -148,17 +150,27 @@ class _LibrosFormState extends State<LibrosForm> {
                 },
               ),
               const SizedBox(height: 15),
-              TextFormField(
-                controller: _anio,
-                keyboardType: TextInputType.number,
-                decoration: _inputDecoration('Año de publicación'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese el año de publicación del libro';
-                  }
-                  return null;
-                },
-              ),
+TextFormField(
+  controller: _anio,
+  keyboardType: TextInputType.number,
+  maxLength: 4,
+  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+  decoration: _inputDecoration('Año de publicación'),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el año de publicación del libro';
+    }
+    if (value.length != 4) {
+      return 'Debe contener exactamente 4 dígitos';
+    }
+    final anio = int.tryParse(value);
+    final currentYear = DateTime.now().year;
+    if (anio == null || anio < 1000 || anio > currentYear) {
+      return 'Ingrese un año válido (hasta $currentYear)';
+    }
+    return null;
+  },
+),
               const SizedBox(height: 15),
               TextFormField(
                 controller: _imagenUrl,

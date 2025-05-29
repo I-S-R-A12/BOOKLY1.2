@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:line_icons/line_icons.dart';
 
 import 'servicio_cloudinary.dart';  
 
@@ -145,6 +146,7 @@ class _vistaPerfilState extends State<vistaPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    backgroundColor: Color.fromARGB(255, 191, 231, 194),
       appBar: AppBar(
         backgroundColor: Color(0xFF9DBE9F),
         title: Text(
@@ -205,13 +207,13 @@ class _vistaPerfilState extends State<vistaPerfil> {
 
                     Text(
                       'Bienvenid@ ${nombre ?? 'Nombre no disponible'}',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     ),
                     Text(
                       correo ?? 'Correo no disponible',
                       style: TextStyle(color: Colors.grey[600]),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 5),
                     Container(
                       height: 1.2,
                       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -226,7 +228,7 @@ class _vistaPerfilState extends State<vistaPerfil> {
                     Center(
                       child: ElevatedButton.icon(
                         onPressed: cerrarSesion,
-                        icon: Icon(Icons.logout),
+                        icon: Icon(LineIcons.alternateSignOut),
                         label: Text("Cerrar sesión"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red[300],

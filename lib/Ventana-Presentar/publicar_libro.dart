@@ -1,3 +1,4 @@
+import 'package:bookly12/Ventana-Presentar/exito.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -47,18 +48,15 @@ class _LibrosFormState extends State<LibrosForm> {
       );
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Libro Publicado Correctamente')),
-        );
         _titulo.clear();
         _autor.clear();
         _anio.clear();
         _imagenUrl.clear();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al publicar libro: ${response.statusCode}, ${response.body}')),
-        );
-      }
+      Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const Exito()),
+  );
+  }
     }
   }
 

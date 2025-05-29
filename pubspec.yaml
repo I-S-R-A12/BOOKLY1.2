@@ -31,4 +31,5 @@ flutter:
 
 
   assets:
+    - assets/google_logo.png
     - assets/images/banner.jpeg

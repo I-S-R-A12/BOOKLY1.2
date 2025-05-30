@@ -21,11 +21,11 @@ class _HomeState extends State<Home> {
               MaterialPageRoute(
                 builder: (_) => const PostScreen(
                   imagePath:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpww0Cs36tkHB49yJqMDpPuPtzACniVldEtg&s',
-                  bookName: 'El Principito',
-                  publishDate: '1943',
-                  author: 'Antoine de Saint-Exupéry',
-                  postedBy: 'Martin y Tati',
+                      'https://upload.wikimedia.org/wikipedia/en/8/8e/Chainsaw_Man_volume_1.png',
+                  bookName: 'Chainsaw Man',
+                  publishDate: '2020-01-01',
+                  author: 'Tatsuki Fujimoto',
+                  postedBy: 'MartinTax',
                 ),
               ),
             );

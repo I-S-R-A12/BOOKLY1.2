@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'verpost.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MainApp());
+// Asegurate que la ruta sea correcta y el archivo 'login.dart' no tenga errores.
+import 'package:bookly12/VentanaInicio/login.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PostScreen(
-        imagePath:
-            'https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG',
-        bookName: 'El Principito',
-        publishDate: '1943',
-        author: 'Antoine de Saint-Exupéry',
-        postedBy: 'Admin',
-      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      home: const LoginWithGoogle(), // Pantalla principal
     );
   }
 }

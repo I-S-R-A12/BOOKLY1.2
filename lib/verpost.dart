@@ -8,13 +8,13 @@ class PostScreen extends StatelessWidget {
   final String postedBy;
 
   const PostScreen({
-    Key? key,
+    super.key, // ✅ usando super.key en lugar de Key? key y luego super(key: key)
     required this.imagePath,
     required this.bookName,
     required this.publishDate,
     required this.author,
     required this.postedBy,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

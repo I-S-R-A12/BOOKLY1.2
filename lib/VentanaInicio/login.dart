@@ -76,10 +76,6 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
         await FirebaseAuth.instance.signInWithCredential(credential);
       }
 
-<<<<<<< HEAD
-      // 👉 VERIFICAR si el widget sigue montado
-      if (!mounted) return;
-=======
       await FirebaseAuth.instance.currentUser?.reload();
 
       // Guardar nombre y correo y url de Fperfil en base de datos personalizada
@@ -87,17 +83,13 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
       if (usuario != null) {
         await guardarPerfilEnRealtimeDatabase(usuario);
       }
->>>>>>> c988edbe1b1e82547125505dcb128d523b1ebe65
 
       // Navega a la vista principal después de iniciar sesión
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => Home()),
       );
     } catch (e) {
-      // 👉 VERIFICAR si el widget sigue montado
-      if (!mounted) return;
-
       showDialog(
         context: context,
         builder:

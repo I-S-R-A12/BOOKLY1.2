@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!--agregar permiso para que la app pueda acceder a intentet-->
 <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="bookly12"
         android:name="${applicationName}"

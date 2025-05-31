@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 class Home extends StatefulWidget {
@@ -48,8 +52,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFE1E3DD),
-
-        //  Título de la app
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,
@@ -57,32 +59,29 @@ class _HomeState extends State<Home> {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
-
       body: CustomScrollView(
         slivers: [
-          // 🔹 Banner que desaparece al hacer scroll
           SliverAppBar(
-            expandedHeight: 350,
+            expandedHeight: 175,
             pinned: false,
+            backgroundColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/banner.jpeg'),
+              background: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/images/banner.jpeg',
                     fit: BoxFit.cover,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                    width: 322,
+                    height: 175,
                   ),
                 ),
               ),
             ),
           ),
-
-          // 🔹 Lista de libros
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 43),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -107,6 +106,8 @@ class _HomeState extends State<Home> {
                       child: Image.network(
                         book['imagePath']!,
                         fit: BoxFit.cover,
+                        width: 143,
+                        height: 202,
                       ),
                     ),
                   );
@@ -117,12 +118,73 @@ class _HomeState extends State<Home> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.48, // Reducido para que las imágenes sean más pequeñas
+                childAspectRatio: 143 / 202,
               ),
+            ),
+          ),
+          // 🔽 Libros desde Firebase
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 43),
+            sliver: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('libros').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                final libros = snapshot.data!.docs;
+
+                return SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final book = libros[index].data() as Map<String, dynamic>;
+
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalleLibro(
+                                titulo: book['title'],
+                                autor: book['author'],
+                                anio: book['year'].toString(),
+                                usuario: book['user'],
+                                imagen: book['imagePath'],
+                              ),
+                            ),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            book['imagePath'],
+                            fit: BoxFit.cover,
+                            width: 143,
+                            height: 202,
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: libros.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 143 / 202,
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
+
+
+    
+
 
       // 🔹 Botones inferiores
       bottomNavigationBar: Padding(

@@ -19,22 +19,92 @@ class DetalleLibro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF737B64),
       appBar: AppBar(
-        title: Text(titulo),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          'BOOKLY',
+          style: TextStyle(
+            fontFamily: 'sans-serif', // Fuente similar a Inter
+            color: Color.fromARGB(255, 8, 8, 8),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(child: Image.network(imagen, height: 200)),
-            const SizedBox(height: 20),
-            Text('📖 Nombre del libro: $titulo', style: const TextStyle(fontSize: 18)),
-            Text('✍️ Autor: $autor', style: const TextStyle(fontSize: 16)),
-            Text('📅 Año de publicacion: $anio', style: const TextStyle(fontSize: 16)),
-            Text('👤 Publicado por: $usuario', style: const TextStyle(fontSize: 16)),
-          ],
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: const Color(0x1FD9D9D9),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(imagen, height: 250),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: const Color(0x1FD9D9D9),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Nombre del libro: $titulo',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Autor: $autor',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Año de publicación: $anio',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Publicado por: $usuario',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

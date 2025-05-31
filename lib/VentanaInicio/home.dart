@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,9 +53,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: const Color(0xFFE1E3DD),
 
-
-      //  Título de la app
-
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,
@@ -72,7 +68,8 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.asset(
@@ -96,32 +93,24 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (context) => DetalleLibro(
-                              titulo: book['title']!,
-                              autor: book['author']!,
-                              anio: book['year']!,
-                              usuario: book['user']!,
-                              imagen: book['imagePath']!,
-                            ),
-
+                        builder: (context) => DetalleLibro(
+                          titulo: book['title']!,
+                          autor: book['author']!,
+                          anio: book['year']!,
+                          usuario: book['user']!,
+                          imagen: book['imagePath']!,
                         ),
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        book['imagePath']!,
-                        fit: BoxFit.cover,
-                        width: 143,
-                        height: 202,
-
                       ),
                     );
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(book['imagePath']!, fit: BoxFit.cover),
+                    child: Image.network(
+                      book['imagePath']!, 
+                      fit: BoxFit.cover,
+                      width: 143,
+                      height: 202,
+                    ),
                   ),
                 );
               }, childCount: librosEjemplo.length),
@@ -129,18 +118,16 @@ class _HomeState extends State<Home> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-
-                childAspectRatio:
-                    0.48, // Reducido para que las imágenes sean más pequeñas
-
+                childAspectRatio: 0.48,
               ),
             ),
           ),
-          // 🔽 Libros desde Firebase
+
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 43),
             sliver: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('libros').snapshots(),
+              stream:
+                  FirebaseFirestore.instance.collection('libros').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SliverToBoxAdapter(
@@ -153,7 +140,8 @@ class _HomeState extends State<Home> {
                 return SliverGrid(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final book = libros[index].data() as Map<String, dynamic>;
+                      final book =
+                          libros[index].data() as Map<String, dynamic>;
 
                       return GestureDetector(
                         onTap: () {
@@ -195,18 +183,13 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-
-
-    
-
-
-      // 🔹 Botones inferiores
+//
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Aquí puedes activar los botones cuando estén listos
+
             IconButton(
               icon: const Icon(Icons.add_circle_outline, size: 32),
               onPressed: () {
@@ -233,5 +216,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-
+//

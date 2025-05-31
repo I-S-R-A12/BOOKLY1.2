@@ -5,7 +5,6 @@
 import FlutterMacOS
 import Foundation
 
-
 import cloud_firestore
 import file_picker
 import file_selector_macos

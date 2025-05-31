@@ -1,8 +1,8 @@
-import 'package:bookly12/VentanaInicio/home.dart';
+
 import 'package:bookly12/VentanaInicio/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'firebase_options.dart';
 
 void main() async {

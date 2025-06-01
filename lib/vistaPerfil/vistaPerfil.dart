@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:line_icons/line_icons.dart';
 
 import 'servicio_cloudinary.dart';  
 
@@ -145,8 +146,9 @@ class _vistaPerfilState extends State<vistaPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF737B64),
       appBar: AppBar(
-        backgroundColor: Color(0xFF9DBE9F),
+        backgroundColor: const Color(0xFF737B64),
         title: Text(
           "Mi Perfil",
           style: TextStyle(color: Color.fromARGB(255, 31, 28, 28)),
@@ -155,93 +157,96 @@ class _vistaPerfilState extends State<vistaPerfil> {
         elevation: 0,
       ),
 
-      body: cargando
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 60.0),
-                child: Column(
-                  children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: seleccionarYSubirImagen,
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Color.fromARGB(255, 219, 211, 211),
-                              backgroundImage:
-                                  (fotoURL != null) ? NetworkImage(fotoURL!) : null,
-                              child: (fotoURL == null)
-                                  ? Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Colors.white,
-                                    )
-                                  : null,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  size: 20,
-                                  color: Colors.grey[700],
-                                ),
-                              ),
-                            ),
-                          ],
+    body: cargando
+    ? Center(child: CircularProgressIndicator())
+    : SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 60.0),
+          child: Center(
+            child: Container(
+              width: 350,
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              decoration: BoxDecoration(
+
+                color: Color(0x1AD9D9D9),
+                borderRadius: BorderRadius.circular(40), 
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: seleccionarYSubirImagen,
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Color.fromARGB(255, 219, 211, 211),
+                          backgroundImage:
+                              (fotoURL != null) ? NetworkImage(fotoURL!) : null,
+                          child: (fotoURL == null)
+                              ? Icon(
+                                  Icons.person,
+                                  size: 60,
+                                  color: Colors.white,
+                                )
+                              : null,
                         ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 20),
-
-                    Text(
-                      'Bienvenid@ ${nombre ?? 'Nombre no disponible'}',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      correo ?? 'Correo no disponible',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 1.2,
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 160, 162, 163).withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                    ),
-                    
-                    SizedBox(height: 135),
-
-                    Center(
-                      child: ElevatedButton.icon(
-                        onPressed: cerrarSesion,
-                        icon: Icon(Icons.logout),
-                        label: Text("Cerrar sesión"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red[300],
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 20,
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Bienvenid@ ${nombre ?? 'Nombre no disponible'}',
+                    style: TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w500, fontFamily: 'Inter'),
+                  ),
+                  // Text(
+                    //   correo ?? 'Correo no disponible',
+                    //   style: TextStyle(color: Colors.grey[600]),
+                    // ),
+                  SizedBox(height: 135),
+                  ElevatedButton.icon(
+                    onPressed: cerrarSesion,
+                    icon: Icon(LineIcons.alternateSignOut, color: Colors.black),
+                    label: Text(
+                      "Cerrar sesión",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 20,
+                        color: Colors.black,
                       ),
                     ),
-                  ],
-                ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFD9D9D9),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 45, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
+        ),
+      ),
     );
   }
 }

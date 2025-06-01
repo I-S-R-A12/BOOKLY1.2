@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Añadido para Firestore
 
 class LibrosForm extends StatefulWidget {
   const LibrosForm({super.key});
@@ -61,6 +62,7 @@ class _LibrosFormState extends State<LibrosForm> {
           'Imagen': _imagenUrl.text,
         };
 
+        // Guardar en Firebase Realtime Database (código original)
         final response = await http.post(
           Uri.parse(
             'https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/libros.json?auth=$idToken',
@@ -70,6 +72,16 @@ class _LibrosFormState extends State<LibrosForm> {
         );
 
         if (response.statusCode == 200) {
+          // Guardar solo la URL de imagen en Firestore
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('libros')
+              .add({
+            'Imagen': _imagenUrl.text,
+            'fechaCreacion': FieldValue.serverTimestamp(),
+          });
+
           _titulo.clear();
           _autor.clear();
           _anio.clear();

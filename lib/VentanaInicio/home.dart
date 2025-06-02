@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
-
-import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -186,11 +178,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
-      backgroundColor: const Color(0xFF737B64),
-
-
+      backgroundColor: _backgroundColor,
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,
@@ -200,7 +188,6 @@ class _HomeState extends State<Home> {
       ),
       body: CustomScrollView(
         slivers: [
-
           _buildSliverAppBar(),
           SliverPadding(
             padding: const EdgeInsets.all(16),
@@ -226,14 +213,12 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
-
             ),
           ),
         ),
       ),
     );
   }
-
 
   Widget _buildBottomNav() {
     return Container(
@@ -265,73 +250,6 @@ class _HomeState extends State<Home> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => vistaPerfil()),
-
-            ),
-          ),
-
-          // 🔽 Libros desde Firebase
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 43),
-            sliver: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('libros').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-
-                final libros = snapshot.data!.docs;
-
-                return SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final book = libros[index].data() as Map<String, dynamic>;
-
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetalleLibro(
-                                titulo: book['title'],
-                                autor: book['author'],
-                                anio: book['year'].toString(),
-                                usuario: book['user'],
-                                imagen: book['imagePath'],
-                              ),
-                            ),
-                          );
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            book['imagePath'],
-                            fit: BoxFit.cover,
-                            width: 143,
-                            height: 202,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/imagen_no_disponible.png',
-                                fit: BoxFit.cover,
-                                width: 143,
-                                height: 202,
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: libros.length,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 143 / 202,
-                  ),
-                );
-              },
             ),
           ),
         ],
@@ -378,7 +296,6 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
 
   Widget _buildLoadingState() {
     return const SliverFillRemaining(
@@ -454,7 +371,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-
   Widget _buildBookCard(Map<String, dynamic> book) {
     return GestureDetector(
       onTap: () {
@@ -521,7 +437,7 @@ class _HomeState extends State<Home> {
       height: double.infinity,
       httpHeaders: const {
         'User-Agent': 'Mozilla/5.0',
-        'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+        'Accept': 'image/webp,image/apng,image/,/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Cache-Control': 'no-cache',
       },

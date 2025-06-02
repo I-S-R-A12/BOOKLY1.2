@@ -178,11 +178,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
+
       backgroundColor: const Color(0xFF737B64),
-=======
-      backgroundColor: _backgroundColor,
->>>>>>> 37c48a5a2518a4a3ac2283fc883448e59d885cd3
+
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,

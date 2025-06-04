@@ -1,4 +1,4 @@
-import 'package:bookly12/verpost.dart';
+import 'package:bookly12/ver_detalles/verpost.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';

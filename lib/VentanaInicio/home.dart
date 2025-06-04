@@ -1,5 +1,6 @@
+import 'package:bookly12/ver_detalles/verpost.dart';
 import 'package:flutter/material.dart';
-import 'detalle_libro.dart';
+
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,7 +22,8 @@ class _HomeState extends State<Home> {
   String errorMessage = '';
   StreamSubscription<DatabaseEvent>? _booksSubscription;
 
-  static const String _databaseUrl = 'https://bookly-6db9d-default-rtdb.firebaseio.com/';
+  static const String _databaseUrl =
+      'https://bookly-6db9d-default-rtdb.firebaseio.com/';
   static const Color _backgroundColor = Color(0xFFE1E3DD);
 
   @override
@@ -54,11 +56,15 @@ class _HomeState extends State<Home> {
     final validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
     final lowerUrl = url.toLowerCase();
 
-    bool hasValidExtension = validExtensions.any((ext) => lowerUrl.contains(ext));
+    bool hasValidExtension = validExtensions.any(
+      (ext) => lowerUrl.contains(ext),
+    );
 
     try {
       final uri = Uri.parse(url);
-      return uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https') && hasValidExtension;
+      return uri.hasScheme &&
+          (uri.scheme == 'http' || uri.scheme == 'https') &&
+          hasValidExtension;
     } catch (e) {
       return false;
     }
@@ -82,8 +88,11 @@ class _HomeState extends State<Home> {
 
   Future<bool> _testImageUrl(String url) async {
     try {
-      final response = await http.head(Uri.parse(url)).timeout(const Duration(seconds: 5));
-      return response.statusCode == 200 && (response.headers['content-type']?.startsWith('image/') ?? false);
+      final response = await http
+          .head(Uri.parse(url))
+          .timeout(const Duration(seconds: 5));
+      return response.statusCode == 200 &&
+          (response.headers['content-type']?.startsWith('image/') ?? false);
     } catch (e) {
       print('Error probando URL: $url - $e');
       return false;
@@ -99,19 +108,23 @@ class _HomeState extends State<Home> {
     _booksSubscription?.cancel();
 
     try {
-      final database = FirebaseDatabase.instanceFor(
-        app: Firebase.app(),
-        databaseURL: _databaseUrl
-      ).ref();
+      final database =
+          FirebaseDatabase.instanceFor(
+            app: Firebase.app(),
+            databaseURL: _databaseUrl,
+          ).ref();
 
-      _booksSubscription = database.child('users').onValue.listen(
-        (event) {
-          _processBookData(event.snapshot.value);
-        },
-        onError: (error) {
-          _handleError('Error de conexión: $error');
-        },
-      );
+      _booksSubscription = database
+          .child('users')
+          .onValue
+          .listen(
+            (event) {
+              _processBookData(event.snapshot.value);
+            },
+            onError: (error) {
+              _handleError('Error de conexión: $error');
+            },
+          );
     } catch (e) {
       _handleError('Error al conectar con la base de datos: $e');
     }
@@ -124,12 +137,19 @@ class _HomeState extends State<Home> {
       data.forEach((userId, userData) {
         if (userData is Map && userData['libros'] is Map) {
           final userBooks = userData['libros'] as Map;
-          final nombreUsuario = userData['nombre'] ?? 'Usuario desconocido';
+          final nombreUsuario =
+              userData['profile']?['nombre'] ?? 'Usuario desconocido';
 
           userBooks.forEach((libroKey, libroData) {
             if (libroData is Map) {
-              final bookMap = _createBookMap(libroData, userId.toString(), libroKey.toString(), nombreUsuario);
-              if (bookMap['title'] != 'Sin título' || bookMap['imagePath'].isNotEmpty) {
+              final bookMap = _createBookMap(
+                libroData,
+                userId.toString(),
+                libroKey.toString(),
+                nombreUsuario,
+              );
+              if (bookMap['title'] != 'Sin título' ||
+                  bookMap['imagePath'].isNotEmpty) {
                 books.add(bookMap);
               }
             }
@@ -139,10 +159,10 @@ class _HomeState extends State<Home> {
     }
 
     books.sort((a, b) {
-  final aDate = a['fechaCreacion'] ?? 0;
-  final bDate = b['fechaCreacion'] ?? 0;
-  return bDate.compareTo(aDate);
-});
+      final aDate = a['fechaCreacion'] ?? 0;
+      final bDate = b['fechaCreacion'] ?? 0;
+      return bDate.compareTo(aDate);
+    });
 
     if (mounted) {
       setState(() {
@@ -162,13 +182,35 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Map<String, dynamic> _createBookMap(Map libroData, String userId, String libroKey, nombreUsuario) {
+  Map<String, dynamic> _createBookMap(
+    Map libroData,
+    String userId,
+    String libroKey,
+    nombreUsuario,
+  ) {
     return {
-      'title': _getValueSafely(libroData, ['Título', 'title', 'titulo'], 'Sin título'),
-      'author': _getValueSafely(libroData, ['Autor', 'author', 'autor'], 'Autor desconocido'),
-      'year': _getValueSafely(libroData, ['Año', 'year', 'anio'], 'Año desconocido'),
+      'title': _getValueSafely(libroData, [
+        'Título',
+        'title',
+        'titulo',
+      ], 'Sin título'),
+      'author': _getValueSafely(libroData, [
+        'Autor',
+        'author',
+        'autor',
+      ], 'Autor desconocido'),
+      'year': _getValueSafely(libroData, [
+        'Año',
+        'year',
+        'anio',
+      ], 'Año desconocido'),
       'user': nombreUsuario,
-      'imagePath': _getValueSafely(libroData, ['Imagen', 'imagePath', 'imageUrl', 'imagen'], ''),
+      'imagePath': _getValueSafely(libroData, [
+        'Imagen',
+        'imagePath',
+        'imageUrl',
+        'imagen',
+      ], ''),
       'libroId': libroKey,
       'userId': userId,
       'fechaCreacion': libroData['fechaCreacion'],
@@ -178,7 +220,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _backgroundColor,
+      backgroundColor: Color(0xFF737B64),
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,
@@ -239,18 +281,20 @@ class _HomeState extends State<Home> {
           _buildNavButton(
             icon: Icons.add_circle_outline,
             label: 'Agregar',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LibrosForm()),
-            ),
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LibrosForm()),
+                ),
           ),
           _buildNavButton(
             icon: Icons.person_outline,
             label: 'Perfil',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => vistaPerfil()),
-            ),
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => vistaPerfil()),
+                ),
           ),
         ],
       ),
@@ -344,7 +388,11 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 16),
             const Text(
               'No hay libros publicados aún',
-              style: TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -353,16 +401,20 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LibrosForm()),
-              ),
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LibrosForm()),
+                  ),
               icon: const Icon(Icons.add),
               label: const Text('Agregar primer libro'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
               ),
             ),
           ],
@@ -377,13 +429,14 @@ class _HomeState extends State<Home> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetalleLibro(
-              titulo: book['title'] ?? 'Sin título',
-              autor: book['author'] ?? 'Autor desconocido',
-              anio: book['year'] ?? 'Año desconocido',
-              usuario: book['user'] ?? 'Usuario desconocido',
-              imagen: book['imagePath'] ?? '',
-            ),
+            builder:
+                (context) => DetalleLibro(
+                  titulo: book['title'] ?? 'Sin título',
+                  autor: book['author'] ?? 'Autor desconocido',
+                  anio: book['year'] ?? 'Año desconocido',
+                  usuario: book['user'] ?? 'Usuario desconocido',
+                  imagen: book['imagePath'] ?? '',
+                ),
           ),
         );
       },
@@ -484,7 +537,10 @@ class _HomeState extends State<Home> {
           children: [
             CircularProgressIndicator(strokeWidth: 2),
             SizedBox(height: 8),
-            Text('Cargando imagen...', style: TextStyle(fontSize: 12, color: Colors.grey)),
+            Text(
+              'Cargando imagen...',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
           ],
         ),
       ),
@@ -503,7 +559,11 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
               message,
-              style: TextStyle(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
               textAlign: TextAlign.center,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,

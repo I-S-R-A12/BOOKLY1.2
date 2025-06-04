@@ -7,6 +7,7 @@ class DetalleLibro extends StatelessWidget {
   final String usuario;
   final String imagen;
 
+  //actualizacion
   const DetalleLibro({
     super.key,
     required this.titulo,

@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
 
   static const String _databaseUrl =
       'https://bookly-6db9d-default-rtdb.firebaseio.com/';
-  static const Color _backgroundColor = Color(0xFFE1E3DD);
 
   @override
   void initState() {

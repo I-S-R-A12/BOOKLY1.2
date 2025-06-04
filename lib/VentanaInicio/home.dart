@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'detalle_libro.dart';
+import 'package:bookly12/verpost.dart';
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:firebase_database/firebase_database.dart';

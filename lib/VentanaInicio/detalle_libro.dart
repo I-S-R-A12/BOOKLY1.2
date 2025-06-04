@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 class DetalleLibro extends StatelessWidget {
   final String titulo;
@@ -110,3 +110,4 @@ class DetalleLibro extends StatelessWidget {
     );
   }
 }
+*/

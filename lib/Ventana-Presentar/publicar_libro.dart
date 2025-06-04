@@ -60,9 +60,7 @@ class _LibrosFormState extends State<LibrosForm> {
           'Autor': _autor.text,
           'Año': _anio.text,
           'Imagen': _imagenUrl.text,
-
-          
-
+ main
         };
 
         // Guardar en Firebase Realtime Database (código original)

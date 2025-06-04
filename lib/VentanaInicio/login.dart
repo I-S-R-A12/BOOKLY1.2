@@ -106,7 +106,7 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.green, // Fondo verde claro
+        backgroundColor: const Color(0xFF737B64),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

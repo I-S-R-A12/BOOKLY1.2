@@ -1,74 +1,22 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
+//
+class DetalleLibro extends StatelessWidget {
+  final String titulo;
+  final String autor;
+  final String anio;
+  final String usuario;
+  final String imagen;
 
-class PostScreen extends StatefulWidget {
-  final String imagePath;
-  final String bookName;
-  final String publishDate;
-  final String author;
-  final String postedBy;
-  final String userId; // UID de Firebase del autor
-
-  const PostScreen({
+  const DetalleLibro({
     super.key,
-    required this.imagePath,
-    required this.bookName,
-    required this.publishDate,
-    required this.author,
-    required this.postedBy,
-    required this.userId,
+    required this.titulo,
+    required this.autor,
+    required this.anio,
+    required this.usuario,
+    required this.imagen,
   });
-
-  @override
-  State<PostScreen> createState() => _PostScreenState();
-}
-
-class _PostScreenState extends State<PostScreen> {
-  String? nombreUsuario;
-  bool cargandoUsuario = true;
-
-  @override
-  void initState() {
-    super.initState();
-    obtenerNombreDelAutor(widget.userId);
-  }
-
-  // Obtiene el nombre del usuario que publicó la entrada usando su UID
-  Future<void> obtenerNombreDelAutor(String uid) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    final idToken = await user.getIdToken();
-    final url = Uri.parse(
-      'https://bookly-6db9d-default-rtdb.firebaseio.com/users/$uid/profile.json?auth=$idToken',
-    );
-
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        setState(() {
-          nombreUsuario = data['nombre'] ?? "Usuario desconocido";
-          cargandoUsuario = false;
-        });
-      } else {
-        print("Error al obtener nombre del autor: ${response.statusCode}");
-        setState(() {
-          cargandoUsuario = false;
-          nombreUsuario = "Usuario desconocido";
-        });
-      }
-    } catch (e) {
-      print("Excepción al obtener nombre del autor: $e");
-      setState(() {
-        cargandoUsuario = false;
-        nombreUsuario = "Usuario desconocido";
-      });
-    }
-  }
-
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,68 +24,86 @@ class _PostScreenState extends State<PostScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'BOOKLY',
           style: TextStyle(
-            color: Colors.white,
+            fontFamily: 'sans-serif', // Fuente similar a Inter
+            color: Color.fromARGB(255, 8, 8, 8),
+            fontSize: 22,
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            letterSpacing: 2,
           ),
         ),
       ),
       body: Center(
-        child: Container(
-          width: 367,
-          height: 622,
-          decoration: BoxDecoration(
-            color: const Color(0x1FD9D9D9),
-            borderRadius: BorderRadius.circular(16),
-          ),
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 32),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  widget.imagePath,
-                  width: 290,
-                  height: 435,
-                  fit: BoxFit.cover,
-                ),
-              ),
               const SizedBox(height: 20),
               Container(
-                width: 290,
                 padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: const Color(0x99D9D9D9),
+                  color: const Color(0x1FD9D9D9),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(imagen, height: 250),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Container(
+
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: const Color(0x1FD9D9D9),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      widget.bookName,
+                      'Nombre del libro: $titulo',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontFamily: 'sans-serif',
                       ),
                     ),
-                    Text(widget.publishDate, textAlign: TextAlign.center),
-                    Text(widget.author, textAlign: TextAlign.center),
                     const SizedBox(height: 8),
                     Text(
-                      cargandoUsuario
-                          ? 'Cargando autor...'
-                          : 'Publicado por: $nombreUsuario',
+                      'Autor: $autor',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+                    Text(
+                      'Año de publicación: $anio',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+                    Text(
+                      'Publicado por: $usuario',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'sans-serif',
+                      ),
                     ),
                   ],
                 ),

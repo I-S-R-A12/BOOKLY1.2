@@ -1,5 +1,6 @@
+import 'package:bookly12/verpost.dart';
 import 'package:flutter/material.dart';
-import 'detalle_libro.dart';
+
 import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
 import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -22,7 +23,8 @@ class _HomeState extends State<Home> {
   StreamSubscription<DatabaseEvent>? _booksSubscription;
 
   static const String _databaseUrl = 'https://bookly-6db9d-default-rtdb.firebaseio.com/';
-  static const Color _backgroundColor = Color(0xFFE1E3DD);
+  
+  
 
   @override
   void initState() {
@@ -124,7 +126,7 @@ class _HomeState extends State<Home> {
       data.forEach((userId, userData) {
         if (userData is Map && userData['libros'] is Map) {
           final userBooks = userData['libros'] as Map;
-          final nombreUsuario = userData['nombre'] ?? 'Usuario desconocido';
+          final nombreUsuario = userData['profile']? ['nombre'] ?? 'Usuario desconocido';
 
           userBooks.forEach((libroKey, libroData) {
             if (libroData is Map) {
@@ -178,7 +180,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _backgroundColor,
+      backgroundColor: Color(0xFF737B64),
       appBar: AppBar(
         title: const Text('BOOKLY'),
         centerTitle: true,

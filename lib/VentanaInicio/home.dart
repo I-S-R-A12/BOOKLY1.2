@@ -437,7 +437,7 @@ class _HomeState extends State<Home> {
       height: double.infinity,
       httpHeaders: const {
         'User-Agent': 'Mozilla/5.0',
-        'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+        'Accept': 'image/webp,image/apng,image/,/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Cache-Control': 'no-cache',
       },

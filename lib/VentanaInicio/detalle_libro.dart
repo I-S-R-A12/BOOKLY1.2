@@ -28,7 +28,7 @@ class DetalleLibro extends StatelessWidget {
         title: const Text(
           'BOOKLY',
           style: TextStyle(
-            fontFamily: 'sans-serif', // Fuente similar a Inter
+            fontFamily: 'sans-serif',
             color: Color.fromARGB(255, 8, 8, 8),
             fontSize: 22,
             fontWeight: FontWeight.bold,

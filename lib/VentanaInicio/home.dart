@@ -26,15 +26,37 @@ class _HomeState extends State<Home> {
   
   
 
+  final ScrollController _scrollController = ScrollController();
+int _visibleCount = 10;
+
   @override
   void initState() {
     super.initState();
     _loadBooks();
+    _scrollController.addListener(() {
+  if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    _loadMoreBooks();
   }
+});
+
+  }
+
+  void _loadMoreBooks() {
+if (_visibleCount < libros.length) {
+setState(() {
+_visibleCount += 10;
+if (_visibleCount > libros.length) {
+_visibleCount = libros.length;
+}
+});
+}
+}
+
 
   @override
   void dispose() {
     _booksSubscription?.cancel();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -280,24 +302,26 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildContent() {
-    if (errorMessage.isNotEmpty) return _buildErrorState();
-    if (isLoading) return _buildLoadingState();
-    if (libros.isEmpty) return _buildEmptyState();
-
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => _buildBookCard(libros[index]),
-        childCount: libros.length,
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 0.48,
-      ),
-    );
-  }
+ Widget _buildContent() {
+if (errorMessage.isNotEmpty) return _buildErrorState();
+if (isLoading) return _buildLoadingState();
+if (libros.isEmpty) return _buildEmptyState();
+return SliverGrid(
+  delegate: SliverChildBuilderDelegate(
+    (context, index) {
+      if (index >= _visibleCount) return null;
+      return _buildBookCard(libros[index]);
+    },
+    childCount: _visibleCount.clamp(0, libros.length),
+  ),
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 16,
+    crossAxisSpacing: 16,
+    childAspectRatio: 0.48,
+  ),
+);
+}
 
   Widget _buildLoadingState() {
     return const SliverFillRemaining(
@@ -389,7 +413,28 @@ class _HomeState extends State<Home> {
           ),
         );
       },
-      child: Container(
+        child: SizedBox(
+  width: 143,
+  height: 202,
+  child: Stack(
+    children: [
+      Positioned(
+        left: 0,
+        top: 0,
+        width: 143,
+        height: 202,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: _buildBookImage(book['imagePath'] ?? ''),
+        ),
+      ),
+    ],
+  ),
+),
+
+
+
+/*      child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
@@ -404,7 +449,7 @@ class _HomeState extends State<Home> {
           borderRadius: BorderRadius.circular(12),
           child: _buildBookImage(book['imagePath'] ?? ''),
         ),
-      ),
+      ),*/
     );
   }
 

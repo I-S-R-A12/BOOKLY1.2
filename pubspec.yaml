@@ -22,7 +22,12 @@ dependencies:
   firebase_database: ^11.3.6
   flutter_cache_manager: ^3.4.1
   line_icons: ^2.0.3
-
+  flutter_launcher_icons: ^0.13.1
+  
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
 
 dev_dependencies:
   flutter_test:

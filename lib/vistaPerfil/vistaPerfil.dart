@@ -139,7 +139,7 @@ class _vistaPerfilState extends State<vistaPerfil> {
         print('Error al actualizar foto: ${response.statusCode}');
       }
     } catch (e) {
-      print('Excepción al actualizar foto: $e');
+        print('Excepción al actualizar foto: $e');
     }
   }
 

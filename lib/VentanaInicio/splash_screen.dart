@@ -1,7 +1,7 @@
 // /lib/VentanaInicio/splash_screen.dart
 
-import 'package:bookly12/VentanaInicio/home.dart';
-import 'package:bookly12/VentanaInicio/login.dart';
+import 'package:BOOKLY/VentanaInicio/home.dart';
+import 'package:BOOKLY/VentanaInicio/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

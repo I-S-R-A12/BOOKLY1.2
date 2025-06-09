@@ -3,7 +3,7 @@
 <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="bookly12"
+        android:label="BOOKLY"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

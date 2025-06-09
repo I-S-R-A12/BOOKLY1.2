@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bookly12"
+    namespace = "com.example.BOOKLY"
     compileSdk = flutter.compileSdkVersion
      ndkVersion = "27.0.12077973" 
 
@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.bookly12"
+        applicationId = "com.example.BOOKLY"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdkVersion(23)

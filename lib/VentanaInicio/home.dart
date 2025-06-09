@@ -1,8 +1,8 @@
-import 'package:bookly12/ver_detalles/verpost.dart';
+import 'package:BOOKLY/ver_detalles/verpost.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bookly12/vistaPerfil/vistaPerfil.dart';
-import 'package:bookly12/Ventana-Presentar/publicar_libro.dart';
+import 'package:BOOKLY/vistaPerfil/vistaPerfil.dart';
+import 'package:BOOKLY/Ventana-Presentar/publicar_libro.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cached_network_image/cached_network_image.dart';

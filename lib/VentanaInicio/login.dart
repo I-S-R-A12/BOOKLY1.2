@@ -1,4 +1,4 @@
-import 'package:bookly12/VentanaInicio/home.dart';
+import 'package:BOOKLY/VentanaInicio/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

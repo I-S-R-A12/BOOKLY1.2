@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // Importa la pantalla donde se muestran los libros
-import 'package:bookly12/VentanaInicio/home.dart'; // Cambia el nombre si tu pantalla tiene otro
+import 'package:BOOKLY/VentanaInicio/home.dart'; // Cambia el nombre si tu pantalla tiene otro
 
 class Exito extends StatefulWidget {
   const Exito({super.key});

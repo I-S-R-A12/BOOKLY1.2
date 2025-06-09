@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     projectId: 'bookly-6db9d',
     storageBucket: 'bookly-6db9d.firebasestorage.app',
     iosClientId: '947930355288-stqmlq46hvt2n221slvmb77up58nejkq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.bookly12',
+    iosBundleId: 'com.example.BOOKLY',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -74,7 +74,7 @@ class DefaultFirebaseOptions {
     projectId: 'bookly-6db9d',
     storageBucket: 'bookly-6db9d.firebasestorage.app',
     iosClientId: '947930355288-stqmlq46hvt2n221slvmb77up58nejkq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.bookly12',
+    iosBundleId: 'com.example.BOOKLY',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

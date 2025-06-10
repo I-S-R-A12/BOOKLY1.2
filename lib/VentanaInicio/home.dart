@@ -316,11 +316,12 @@ return SliverGrid(
   ),
   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
     crossAxisCount: 2,
-    mainAxisSpacing: 16,
-    crossAxisSpacing: 16,
-    childAspectRatio: 0.48,
+    mainAxisSpacing: 10, // antes 16
+    crossAxisSpacing: 10, // antes 16
+    childAspectRatio: 0.65, // más cercano a una proporción natural de portada
   ),
 );
+
 }
 
   Widget _buildLoadingState() {
@@ -397,45 +398,35 @@ return SliverGrid(
     );
   }
 
-  Widget _buildBookCard(Map<String, dynamic> book) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetalleLibro(
-              titulo: book['title'] ?? 'Sin título',
-              autor: book['author'] ?? 'Autor desconocido',
-              anio: book['year'] ?? 'Año desconocido',
-              usuario: book['user'] ?? 'Usuario desconocido',
-              imagen: book['imagePath'] ?? '',
-            ),
+ Widget _buildBookCard(Map<String, dynamic> book) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetalleLibro(
+            titulo: book['title'] ?? 'Sin título',
+            autor: book['author'] ?? 'Autor desconocido',
+            anio: book['year'] ?? 'Año desconocido',
+            usuario: book['user'] ?? 'Usuario desconocido',
+            imagen: book['imagePath'] ?? '',
           ),
-        );
-      },
-        child: SizedBox(
-  width: 143,
-  height: 202,
-  child: Stack(
-    children: [
-      Positioned(
-        left: 0,
-        top: 0,
-        width: 143,
-        height: 202,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: _buildBookImage(book['imagePath'] ?? ''),
-          
         ),
+      );
+    },
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        color: Colors.white,
+        child: AspectRatio(
+          aspectRatio: 0.65, // asegura proporción uniforme
+          child: _buildBookImage(book['imagePath'] ?? ''),
+        )
       ),
-    ],
-  ),
-),
+    ),
+  );
+}
 
-//
-    );
-  }
 
   Widget _buildBookImage(String imagePath) {
     if (imagePath.isEmpty || !_isValidImageUrl(imagePath)) {
